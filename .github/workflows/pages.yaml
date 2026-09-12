@@ -1,0 +1,52 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+---
+name: pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time, and never cancel one in flight: a half-finished
+# Pages deploy would leave the published site broken.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      # The same gate ci.yaml runs, repeated here so that a part which no
+      # longer meshes soundly cannot reach the published page.
+      - run: npm run check
+
+      # Nothing to build. The page is index.html, src/ and vendor/, all of it
+      # loaded by relative path, so those three are copied out as they are and
+      # the tools, docs and local server stay out of the site.
+      - run: mkdir _site && cp -r index.html src vendor _site/
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

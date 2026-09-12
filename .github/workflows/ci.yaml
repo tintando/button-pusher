@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+---
+name: ci
+permissions:
+  contents: read
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      # No `npm ci` step: there are no dependencies and so no lock file.
+      # three.js is vendored, and everything below runs on the standard library.
+
+      # The real gate. 38 parameter sets are meshed and each one is checked for
+      # being a single watertight outward-facing solid, with the wall at its
+      # setting and both peg tips where the numbers put them. It exits non-zero
+      # on any of those.
+      - run: npm run check
+
+      # The preview tube: closed, bores straight and the diameter they claim.
+      - run: npm run tubecheck
+
+      # Sphere-traces four views straight off the field, which exercises the
+      # model and the PNG encoder end to end.
+      - run: npm run render
+
+      # src/app.js and src/worker.js only ever run in a browser, so nothing
+      # above parses them. tools/browsercheck.mjs is what really exercises
+      # them, and it needs Chrome and a running server, so it stays manual.
+      - run: node --check src/app.js && node --check src/worker.js

@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mast-base button pusher</title>
+<link rel="stylesheet" href="./src/style.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🪁</text></svg>">
+<script type="importmap">{"imports":{"three":"./vendor/three.module.js"}}</script>
+</head>
+<body>
+<aside id="panel">
+  <header>
+    <h1>Mast-base button pusher</h1>
+    <p class="sub">Parametric clip. Every number is live.</p>
+    <div class="row">
+      <button id="reset" class="ghost" title="Back to the starting point in the spec">Reset</button>
+      <button id="copy" class="ghost" title="Copy the current settings as JSON">Copy</button>
+      <button id="paste" class="ghost" title="Paste settings JSON">Paste</button>
+      <label class="chk" title="Show the note under each control"><input type="checkbox" id="hints" checked> hints</label>
+    </div>
+  </header>
+  <div id="controls"></div>
+  <footer>
+    <details id="readoutBox">
+      <summary>What came out<span id="msgCount"></span></summary>
+      <div id="readout"></div>
+      <div id="messages"></div>
+    </details>
+  </footer>
+</aside>
+
+<main>
+  <div id="view"></div>
+  <div id="toolbar">
+    <label class="sel">tube
+      <select id="tubeMode">
+        <option value="solid">solid</option>
+        <option value="see" selected>see-through</option>
+        <option value="off">hidden</option>
+      </select>
+    </label>
+    <label class="chk"><input type="checkbox" id="showGear" checked> button &amp; hole</label>
+    <label class="chk"><input type="checkbox" id="showBed" checked> print bed</label>
+    <label class="chk"><input type="checkbox" id="section"> section</label>
+    <label class="chk"><input type="checkbox" id="spin"> spin</label>
+    <span class="sep"></span>
+    <label class="sel">detail
+      <select id="quality">
+        <option value="1.0">coarse</option>
+        <option value="0.7" selected>normal</option>
+        <option value="0.5">fine</option>
+        <option value="0.35">very fine</option>
+      </select>
+    </label>
+    <span class="sep"></span>
+    <button id="stl">Download STL</button>
+    <span id="status"></span>
+  </div>
+  <div id="legend">
+    <span><i style="background:#e0b070"></i>clip</span>
+    <span><i style="background:#8d949c"></i>extension tube</span>
+  </div>
+</main>
+<script type="module" src="./src/app.js"></script>
+</body>
+</html>
