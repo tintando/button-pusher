@@ -8,7 +8,7 @@ The whole part is one signed-distance field. Swellings, ears, fillets and feet t
 
 <img src="docs/media/hero.png" alt="The preview: the amber clip sitting on a see-through extension tube, the gear measurements on the left and the computed readout underneath" width="75%">
 
-Try it in a browser: **https://tintando.github.io/button-pusher/**
+Try it in a browser: **https://button-pusher.tintan.do/**
 
 </div>
 
@@ -47,7 +47,7 @@ The brief this was built to, in plain words and with no geometry in it, is [`doc
 
 ## Quick start
 
-The preview is hosted at **https://tintando.github.io/button-pusher/**, which needs nothing at all. To run it locally, or to run the checks, you need Node 18 or newer and nothing to install: there are no dependencies.
+The preview is hosted at **https://button-pusher.tintan.do/**, which needs nothing at all. To run it locally, or to run the checks, you need Node 18 or newer and nothing to install: there are no dependencies.
 
 ```bash
 git clone https://github.com/tintando/button-pusher.git
@@ -196,6 +196,7 @@ node tools/browsercheck.mjs   # drive the real page in headless Chrome
 ```
 button-pusher/
 ├── index.html              # the whole page: panel, viewport, toolbar
+├── 404.html                # what the host serves for an unknown path
 ├── server.mjs              # static server, node:http and nothing else
 ├── src/
 │   ├── clip.js             # the model: the whole part as one distance field
@@ -215,7 +216,7 @@ button-pusher/
 ├── vendor/                 # three.js r170 and OrbitControls, checked in on purpose
 ├── .github/workflows/
 │   ├── ci.yaml             # the checks below
-│   └── pages.yaml          # the same gate, then index.html, src/ and vendor/ to GitHub Pages
+│   └── pages.yaml          # the same gate, then the page, src/ and vendor/ to Cloudflare Pages
 └── docs/
     ├── spec.md             # the brief, in plain words
     └── media/              # the images in this README, and their shot list
